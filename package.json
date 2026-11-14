@@ -1,18 +1,19 @@
 {
-  "name": "@dha/admin",
+  "name": "dha-works-admin-portal",
   "version": "0.1.0",
   "private": true,
-  "description": "DHA Works admin portal (Next.js). Staff only: password + emailed code. See docs/SECURITY.md section 16.",
+  "description": "DHA Works admin portal (Next.js). Staff only: password plus an authenticator-app code.",
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --test \"src/**/*.test.ts\""
+    "test": "node --test \"src/**/*.test.ts\"",
+    "types:sync": "node scripts/sync-types.mjs"
   },
   "dependencies": {
-    "@dha/supabase": "*",
+    "@dha/supabase": "file:vendor/supabase",
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "^2.118.0",
     "next": "16.4.5",
@@ -26,5 +27,13 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "16.4.5",
     "typescript": "~5.9.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.8"
+    }
   }
 }

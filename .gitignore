@@ -1,0 +1,22 @@
+node_modules/
+.next/
+.next-*/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# environment files: only the example is committed
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel/
+
+# editors and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

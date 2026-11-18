@@ -831,6 +831,7 @@ export type Database = {
           voice_note_path: string | null
           window_from: string | null
           window_to: string | null
+          worker_reminded_at: string | null
         }
         Insert: {
           accepted_quote_id?: string | null
@@ -863,6 +864,7 @@ export type Database = {
           voice_note_path?: string | null
           window_from?: string | null
           window_to?: string | null
+          worker_reminded_at?: string | null
         }
         Update: {
           accepted_quote_id?: string | null
@@ -895,6 +897,7 @@ export type Database = {
           voice_note_path?: string | null
           window_from?: string | null
           window_to?: string | null
+          worker_reminded_at?: string | null
         }
         Relationships: [
           {
@@ -1106,6 +1109,8 @@ export type Database = {
       }
       quotes: {
         Row: {
+          busy_eta_minutes: number | null
+          busy_eta_pending: boolean
           created_at: string
           decided_at: string | null
           id: string
@@ -1127,6 +1132,8 @@ export type Database = {
           worker_id: string
         }
         Insert: {
+          busy_eta_minutes?: number | null
+          busy_eta_pending?: boolean
           created_at?: string
           decided_at?: string | null
           id?: string
@@ -1148,6 +1155,8 @@ export type Database = {
           worker_id: string
         }
         Update: {
+          busy_eta_minutes?: number | null
+          busy_eta_pending?: boolean
           created_at?: string
           decided_at?: string | null
           id?: string
@@ -1779,6 +1788,7 @@ export type Database = {
           about: string | null
           available_today: boolean
           experience_years: number | null
+          job_reminders: boolean
           jobs_done: number
           profile_id: string
           rating_avg: number
@@ -1790,6 +1800,7 @@ export type Database = {
           about?: string | null
           available_today?: boolean
           experience_years?: number | null
+          job_reminders?: boolean
           jobs_done?: number
           profile_id: string
           rating_avg?: number
@@ -1801,6 +1812,7 @@ export type Database = {
           about?: string | null
           available_today?: boolean
           experience_years?: number | null
+          job_reminders?: boolean
           jobs_done?: number
           profile_id?: string
           rating_avg?: number
@@ -1962,6 +1974,7 @@ export type Database = {
       resident_quotes: {
         Row: {
           avatar_path: string | null
+          busy_eta_minutes: number | null
           created_at: string | null
           experience_years: number | null
           id: string | null
@@ -2139,6 +2152,7 @@ export type Database = {
     Functions: {
       accept_job: {
         Args: {
+          p_busy_eta_minutes?: number
           p_job_id: string
           p_labour: number
           p_materials?: number
@@ -2180,7 +2194,7 @@ export type Database = {
         Args: { p_limit?: number; p_offset?: number; p_status?: string }
         Returns: Json
       }
-      admin_dashboard: { Args: never; Returns: Json }
+      admin_dashboard: { Args: { p_range?: string }; Returns: Json }
       admin_decide_cancellation: {
         Args: { p_approve: boolean; p_note: string; p_request: string }
         Returns: undefined
@@ -2231,6 +2245,7 @@ export type Database = {
           p_offset?: number
           p_phase?: number
           p_search?: string
+          p_stage?: string
           p_status?: Database["public"]["Enums"]["job_status"]
           p_today?: boolean
         }
@@ -2504,6 +2519,11 @@ export type Database = {
         Returns: string
       }
       set_available_today: { Args: { p_value: boolean }; Returns: undefined }
+      set_busy_eta: {
+        Args: { p_minutes: number; p_quote_id: string }
+        Returns: undefined
+      }
+      set_job_reminders: { Args: { p_value: boolean }; Returns: undefined }
       set_my_areas: { Args: { p_phases: number[] }; Returns: undefined }
       set_my_categories: {
         Args: { p_category_ids: number[] }

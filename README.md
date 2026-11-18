@@ -10,7 +10,7 @@ Next.js 16 (App Router, server actions) and TypeScript, `@supabase/ssr` for cook
 
 ## Sign-in and security in one paragraph
 
-Staff sign in with email and password (plus a Turnstile check), then a six-digit code from an **authenticator app**. A first sign-in, or a lost phone, proves the mailbox with an emailed code and then shows a QR code to set the authenticator up. Sensitive actions (suspending, deciding applications, settings and more) ask for a fresh authenticator code every 15 minutes. Cookies are HttpOnly, the Content-Security-Policy uses a per-request nonce, every page and action calls `requireAdmin()`, and every admin database function checks `is_admin()` and writes an audit row. Details: [docs/ADMIN-PORTAL.md](docs/ADMIN-PORTAL.md) and the security notes in the platform repository.
+Staff sign in with email and password (plus a Turnstile check), then a six-digit code **emailed** to them (the Edge Function `admin-2fa` of the platform project sends it; valid 10 minutes). Sensitive actions (suspending, deciding or reopening applications, settings and more) ask for a new emailed code every 15 minutes. Cookies are HttpOnly, the Content-Security-Policy uses a per-request nonce, every page and action calls `requireAdmin()`, and every admin database function checks `is_admin()` and writes an audit row. Details: [docs/ADMIN-PORTAL.md](docs/ADMIN-PORTAL.md) and the security notes in the platform repository.
 
 ## Run it locally
 

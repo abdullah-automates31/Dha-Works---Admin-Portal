@@ -25,8 +25,8 @@ jobs:
       NEXT_PUBLIC_TURNSTILE_SITE_KEY: ci-placeholder-site-key
       TURNSTILE_SECRET_KEY: ci-placeholder-secret
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
@@ -41,14 +41,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
       # The tool is run directly (not the wrapper action, which cannot scan the first push of a new branch): the whole history, default rules.
       - name: Scan the whole history
         run: |
           VER=8.21.2
-          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${VER}/gitleaks_${VER}_linux_x64.tar.gz" | tar -xz gitleaks
+          FILE=gitleaks_${VER}_linux_x64.tar.gz
+          # The expected checksum is pinned here, so a changed release file is refused.
+          SHA256=5bc41815076e6ed6ef8fbecc9d9b75bcae31f39029ceb55da08086315316e3ba
+          curl -sSLO "https://github.com/gitleaks/gitleaks/releases/download/v${VER}/${FILE}"
+          echo "${SHA256}  ${FILE}" | sha256sum -c -
+          tar -xzf "${FILE}" gitleaks
           ./gitleaks detect --source . --no-banner --redact --verbose
 
   audit:
@@ -56,8 +61,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
